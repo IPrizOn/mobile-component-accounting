@@ -1,13 +1,19 @@
 package database
 
-func DeleteComponent() error {
+func DeleteComponent(id int) error {
+	delete(componentsList, id)
+
 	return nil
 }
 
-func DeleteCustomer() error {
+func DeleteCustomer(id int) error {
+	delete(customerList, id)
+
 	return nil
 }
 
-func DeleteSale() error {
+func DeleteSale(id int) error {
+	delete(salesList, id)
+
 	return nil
 }

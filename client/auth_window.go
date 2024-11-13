@@ -1,6 +1,10 @@
 package client
 
 import (
+	"log"
+	"mobile/database"
+	"mobile/domain"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
@@ -8,16 +12,24 @@ import (
 )
 
 var (
-	userRole string
+	userRole  string
+	usersList map[int]domain.Person
 )
 
-func openAuthWindow() {
+func openWindowAuth() {
+	var err error
+
+	usersList, err = database.GetPersonsList()
+	if err != nil {
+		log.Println(err)
+	}
+
 	windowMain.SetTitle("Авторизация")
 
 	content := loadContent()
 
-	//windowMain.Resize(fyne.NewSize(300, 250))
-	//windowMain.CenterOnScreen()
+	windowMain.Resize(fyne.NewSize(300, 250))
+	windowMain.CenterOnScreen()
 	windowMain.SetContent(content)
 }
 
@@ -33,7 +45,7 @@ func loadContent() *fyne.Container {
 		if entryLogin.Text != "" && entryPassword.Text != "" {
 			isAuth := isAuth(entryLogin.Text, entryPassword.Text)
 			if isAuth {
-				openMainWindow()
+				openWindowMain()
 			} else {
 				labelError.SetText("Неправильный логин или пароль")
 			}
@@ -57,11 +69,11 @@ func loadContent() *fyne.Container {
 }
 
 func isAuth(login string, password string) bool {
-	if login == "admin" && password == "12345" {
-		userRole = "admin"
+	if login == usersList[1].Login && password == usersList[1].Password {
+		userRole = usersList[1].Role
 		return true
-	} else if login == "f" && password == "f" {
-		userRole = "common"
+	} else if login == usersList[2].Login && password == usersList[2].Password {
+		userRole = usersList[2].Role
 		return true
 	}
 

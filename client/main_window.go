@@ -16,11 +16,11 @@ var (
 	buttonBack *widget.Button
 )
 
-func openMainWindow() {
+func openWindowMain() {
 	windowMain.SetTitle("Учёт комплектующих")
 
 	buttonBack = widget.NewButton("Выход", func() {
-		openAuthWindow()
+		openWindowAuth()
 	})
 
 	contentComponents := loadTabComponents()
@@ -34,8 +34,8 @@ func openMainWindow() {
 	)
 	appTabs.SetTabLocation(container.TabLocationTop)
 
-	//windowMain.Resize(fyne.NewSize(1200, 650))
-	//windowMain.CenterOnScreen()
+	windowMain.Resize(fyne.NewSize(1200, 650))
+	windowMain.CenterOnScreen()
 	windowMain.SetContent(appTabs)
 }
 
@@ -53,24 +53,7 @@ func loadTabComponents() *fyne.Container {
 		func() fyne.CanvasObject {
 			return container.NewStack(
 				widget.NewLabel("data"),
-
-				container.NewHBox(
-					widget.NewButton("Изменить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-
-					widget.NewButton("Удалить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-				),
+				container.NewHBox(),
 			)
 		},
 
@@ -80,7 +63,7 @@ func loadTabComponents() *fyne.Container {
 			label.Show()
 			buttonsContainer.Hide()
 			if tci.Col == 0 {
-				label.SetText(strconv.Itoa(componentsList[tci.Row].ID))
+				label.SetText(strconv.Itoa(tci.Row + 1))
 			} else if tci.Col == 1 {
 				label.SetText(componentsList[tci.Row].Type)
 			} else if tci.Col == 2 {
@@ -90,9 +73,27 @@ func loadTabComponents() *fyne.Container {
 			} else if tci.Col == 4 {
 				label.Hide()
 				buttonsContainer.Show()
+
+				co.(*fyne.Container).Objects[1] = container.NewHBox(
+					widget.NewButton("Изменить", func() {
+						if userRole != "common" {
+							openDialogWindowEditComponent(tci.Row+1, componentsList[tci.Row].Type, componentsList[tci.Row].Description, componentsList[tci.Row].Price)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+					widget.NewButton("Удалить", func() {
+						if userRole != "common" {
+							openDialogWindowConfirm("component", tci.Row+1)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+				)
 			}
 		},
 	)
+
 	dataTable.UpdateHeader = func(id widget.TableCellID, template fyne.CanvasObject) {
 		label := template.(*widget.Label)
 		if id.Col == -1 {
@@ -116,13 +117,13 @@ func loadTabComponents() *fyne.Container {
 	dataTable.SetColumnWidth(4, 200)
 
 	box := container.NewHBox(
-		widget.NewLabel("СПИСОК КОМПЛЕКТУЮЩИХ"),
+		widget.NewLabel("СПИСОК КОМПОНЕНТОВ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить", func() {
+		widget.NewButton("Добавить компонент", func() {
 			if userRole != "common" {
-
+				openDialogWindowAddComponent()
 			} else {
-				openDialogWindow()
+				openDialogWindowError()
 			}
 		}),
 	)
@@ -153,24 +154,7 @@ func loadTabCustomers() *fyne.Container {
 		func() fyne.CanvasObject {
 			return container.NewStack(
 				widget.NewLabel("data"),
-
-				container.NewHBox(
-					widget.NewButton("Изменить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-
-					widget.NewButton("Удалить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-				),
+				container.NewHBox(),
 			)
 		},
 
@@ -180,7 +164,7 @@ func loadTabCustomers() *fyne.Container {
 			label.Show()
 			buttonsContainer.Hide()
 			if tci.Col == 0 {
-				label.SetText(strconv.Itoa(customersList[tci.Row].ID))
+				label.SetText(strconv.Itoa(tci.Row + 1))
 			} else if tci.Col == 1 {
 				label.SetText(customersList[tci.Row].Name)
 			} else if tci.Col == 2 {
@@ -192,9 +176,27 @@ func loadTabCustomers() *fyne.Container {
 			} else if tci.Col == 5 {
 				label.Hide()
 				buttonsContainer.Show()
+
+				co.(*fyne.Container).Objects[1] = container.NewHBox(
+					widget.NewButton("Изменить", func() {
+						if userRole != "common" {
+							openDialogWindowEditCustomer(tci.Row+1, customersList[tci.Row].Name, customersList[tci.Row].Phone, customersList[tci.Row].Email, customersList[tci.Row].Address)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+					widget.NewButton("Удалить", func() {
+						if userRole != "common" {
+							openDialogWindowConfirm("customer", tci.Row+1)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+				)
 			}
 		},
 	)
+
 	dataTable.UpdateHeader = func(id widget.TableCellID, template fyne.CanvasObject) {
 		label := template.(*widget.Label)
 		if id.Col == -1 {
@@ -223,11 +225,11 @@ func loadTabCustomers() *fyne.Container {
 	box := container.NewHBox(
 		widget.NewLabel("СПИСОК КЛИЕНТОВ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить", func() {
+		widget.NewButton("Добавить клиента", func() {
 			if userRole != "common" {
-
+				openDialogWindowAddCustomer()
 			} else {
-				openDialogWindow()
+				openDialogWindowError()
 			}
 		}),
 	)
@@ -258,24 +260,7 @@ func loadTabSales() *fyne.Container {
 		func() fyne.CanvasObject {
 			return container.NewStack(
 				widget.NewLabel("data"),
-
-				container.NewHBox(
-					widget.NewButton("Изменить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-
-					widget.NewButton("Удалить", func() {
-						if userRole != "common" {
-
-						} else {
-							openDialogWindow()
-						}
-					}),
-				),
+				container.NewHBox(),
 			)
 		},
 
@@ -285,7 +270,7 @@ func loadTabSales() *fyne.Container {
 			label.Show()
 			buttonsContainer.Hide()
 			if tci.Col == 0 {
-				label.SetText(strconv.Itoa(salesList[tci.Row].ID))
+				label.SetText(strconv.Itoa(tci.Row + 1))
 			} else if tci.Col == 1 {
 				label.SetText(strconv.Itoa(salesList[tci.Row].ComponentID))
 			} else if tci.Col == 2 {
@@ -295,9 +280,27 @@ func loadTabSales() *fyne.Container {
 			} else if tci.Col == 4 {
 				label.Hide()
 				buttonsContainer.Show()
+
+				co.(*fyne.Container).Objects[1] = container.NewHBox(
+					widget.NewButton("Изменить", func() {
+						if userRole != "common" {
+							openDialogWindowEditSale(tci.Row+1, salesList[tci.Row].ComponentID, salesList[tci.Row].CustomerID, salesList[tci.Row].Count)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+					widget.NewButton("Удалить", func() {
+						if userRole != "common" {
+							openDialogWindowConfirm("sale", tci.Row+1)
+						} else {
+							openDialogWindowError()
+						}
+					}),
+				)
 			}
 		},
 	)
+
 	dataTable.UpdateHeader = func(id widget.TableCellID, template fyne.CanvasObject) {
 		label := template.(*widget.Label)
 		if id.Col == -1 {
@@ -323,11 +326,11 @@ func loadTabSales() *fyne.Container {
 	box := container.NewHBox(
 		widget.NewLabel("СПИСОК ПРОДАЖ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить", func() {
+		widget.NewButton("Добавить продажу", func() {
 			if userRole != "common" {
-
+				openDialogWindowAddSale()
 			} else {
-				openDialogWindow()
+				openDialogWindowError()
 			}
 		}),
 	)

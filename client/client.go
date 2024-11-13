@@ -12,11 +12,12 @@ var (
 
 func Start() {
 	AppFyne = app.New()
+
 	windowMain = AppFyne.NewWindow("")
 
-	openAuthWindow()
+	openWindowAuth()
 
 	windowMain.Show()
-	//windowMain.SetMaster()
+	windowMain.SetMaster()
 	AppFyne.Run()
 }
