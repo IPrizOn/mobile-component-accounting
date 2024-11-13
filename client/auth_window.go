@@ -69,11 +69,11 @@ func loadContent() *fyne.Container {
 }
 
 func isAuth(login string, password string) bool {
-	if login == usersList[1].Login && password == usersList[1].Password {
-		userRole = usersList[1].Role
+	if login == usersList[0].Login && password == usersList[0].Password {
+		userRole = usersList[0].Role
 		return true
-	} else if login == usersList[2].Login && password == usersList[2].Password {
-		userRole = usersList[2].Role
+	} else if login == usersList[1].Login && password == usersList[1].Password {
+		userRole = usersList[1].Role
 		return true
 	}
 

@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	client.Start()
-
 	database.InitDatabase()
+
+	client.Start()
 }

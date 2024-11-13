@@ -77,14 +77,14 @@ func loadTabComponents() *fyne.Container {
 				co.(*fyne.Container).Objects[1] = container.NewHBox(
 					widget.NewButton("Изменить", func() {
 						if userRole != "common" {
-							openDialogWindowEditComponent(tci.Row+1, componentsList[tci.Row].Type, componentsList[tci.Row].Description, componentsList[tci.Row].Price)
+							openDialogWindowEditComponent(tci.Row, componentsList[tci.Row].Type, componentsList[tci.Row].Description, componentsList[tci.Row].Price)
 						} else {
 							openDialogWindowError()
 						}
 					}),
 					widget.NewButton("Удалить", func() {
 						if userRole != "common" {
-							openDialogWindowConfirm("component", tci.Row+1)
+							openDialogWindowConfirm("component", tci.Row)
 						} else {
 							openDialogWindowError()
 						}
@@ -119,7 +119,7 @@ func loadTabComponents() *fyne.Container {
 	box := container.NewHBox(
 		widget.NewLabel("СПИСОК КОМПОНЕНТОВ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить компонент", func() {
+		widget.NewButton("Добавить", func() {
 			if userRole != "common" {
 				openDialogWindowAddComponent()
 			} else {
@@ -180,14 +180,14 @@ func loadTabCustomers() *fyne.Container {
 				co.(*fyne.Container).Objects[1] = container.NewHBox(
 					widget.NewButton("Изменить", func() {
 						if userRole != "common" {
-							openDialogWindowEditCustomer(tci.Row+1, customersList[tci.Row].Name, customersList[tci.Row].Phone, customersList[tci.Row].Email, customersList[tci.Row].Address)
+							openDialogWindowEditCustomer(tci.Row, customersList[tci.Row].Name, customersList[tci.Row].Phone, customersList[tci.Row].Email, customersList[tci.Row].Address)
 						} else {
 							openDialogWindowError()
 						}
 					}),
 					widget.NewButton("Удалить", func() {
 						if userRole != "common" {
-							openDialogWindowConfirm("customer", tci.Row+1)
+							openDialogWindowConfirm("customer", tci.Row)
 						} else {
 							openDialogWindowError()
 						}
@@ -225,7 +225,7 @@ func loadTabCustomers() *fyne.Container {
 	box := container.NewHBox(
 		widget.NewLabel("СПИСОК КЛИЕНТОВ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить клиента", func() {
+		widget.NewButton("Добавить", func() {
 			if userRole != "common" {
 				openDialogWindowAddCustomer()
 			} else {
@@ -284,14 +284,14 @@ func loadTabSales() *fyne.Container {
 				co.(*fyne.Container).Objects[1] = container.NewHBox(
 					widget.NewButton("Изменить", func() {
 						if userRole != "common" {
-							openDialogWindowEditSale(tci.Row+1, salesList[tci.Row].ComponentID, salesList[tci.Row].CustomerID, salesList[tci.Row].Count)
+							openDialogWindowEditSale(tci.Row, salesList[tci.Row].ComponentID, salesList[tci.Row].CustomerID, salesList[tci.Row].Count)
 						} else {
 							openDialogWindowError()
 						}
 					}),
 					widget.NewButton("Удалить", func() {
 						if userRole != "common" {
-							openDialogWindowConfirm("sale", tci.Row+1)
+							openDialogWindowConfirm("sale", tci.Row)
 						} else {
 							openDialogWindowError()
 						}
@@ -326,7 +326,7 @@ func loadTabSales() *fyne.Container {
 	box := container.NewHBox(
 		widget.NewLabel("СПИСОК ПРОДАЖ"),
 		layout.NewSpacer(),
-		widget.NewButton("Добавить продажу", func() {
+		widget.NewButton("Добавить", func() {
 			if userRole != "common" {
 				openDialogWindowAddSale()
 			} else {
